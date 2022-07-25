@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Generator store</title>
+</head>
+
+<body>
+  <div class="wrapper" x-data="generatorApp">
+
+    <div>
+
+      <nav class="navbar navbar-expand-sm navbar-dark w3-indigo">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="javascript:void(0)">GenX Shop</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#generatorBar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="generatorBar">
+            <ul class="navbar-nav me-auto">
+
+              <li class="nav-item">
+                <a class="nav-link w3-large" href="javascript:void(0)" @click="openHome()">Home</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link w3-large" href="javascript:void(0)" @click="openCategories()">Products</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link w3-large w3-hide" href="javascript:void(0)" @click="openAbout()">About</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link w3-large w3-hide" href="javascript:void(0)" @click="openContact()">Contact Us</a>
+              </li>
+
+              <li class="nav-item" x-show="!accountVisible">
+                <a class="nav-link w3-large" href="javascript:void(0)" @click="openSignIn()">Sign In</a>
+              </li>
+
+              <li class="nav-item" x-show="!accountVisible">
+                <a class="nav-link w3-large" href="javascript:void(0)" @click="openSignUp()">Sign Up</a>
+              </li>
+
+              <li class="nav-item" x-show="accountVisible">
+                <a class="nav-link w3-large" href="javascript:void(0)" @click="openShoppingCart()">Shopping Cart</a>
+              </li>
+
+              <li class="nav-item" x-show="accountVisible">
+                <a class="nav-link w3-large" href="javascript:void(0)" @click="signout()">Logout</a>
+              </li>
+            </ul>
+            <div class="d-flex">
+              <div>
+                <input class="w3-padding w3-border w3-round-medium" type="text" placeholder="Search"
+                  x-model="searchText">
+                <button class="w3-button w3-blue w3-round-medium" type="button" @click="openSearch()">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div x-show="accountVisible" class=" w3-padding w3-large">
+        <a href="#" class="w3-text-indigo w3-button w3-white w3-border" @click="openProfile()">Profile</a>
+        <a href="#" class="w3-text-indigo w3-button w3-white w3-border" @click="openOrders()">Orders</a>
+      </div>
+
+      <div class="container py-5 h-100 w3-animate-bottom" x-show="currentView == VIEW_SIGNIN">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong w3-round-large w3-border w3-border-indig" o>
+              <div class="card-body p-5 text-center">
+
+                <h3 class="mb-5 w3-text-indigo"><i class="bi bi-lock"></i> Sign in</h3>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label">User Name</label>
+                  <input class="form-control form-control-lg" x-model="user.user_name" />
+
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label">Password</label>
+                  <input type="password" class="form-control form-control-lg" x-model="user.password" />
+
+                </div>
+
+                <button class="btn btn-primary btn-lm btn-block" @click="signIn()"><i class="bi bi-key"></i> Sign In
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container py-5 h-100 w3-animate-bottom" x-show="currentView == VIEW_SIGNUP">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong w3-round-large w3-border w3-border-indig" o>
+              <div class="card-body p-5 text-center">
+
+                <h3 class="mb-5 w3-text-indigo"><i class="bi bi-lock"></i> Sign Up</h3>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label">First Name</label>
+                  <input class="form-control form-control-lg" x-model="user.first_name" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label">Lastname</label>
+                  <input class="form-control form-control-lg" x-model="user.lastname" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label">Contact Number</label>
+                  <input class="form-control form-control-lg" x-model="user.contact_number" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" class="form-control form-control-lg" x-model="user.email_address" />
+                </div>
+
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="typeEmailX-2">User Name</label>
+                  <input class="form-control form-control-lg" x-model="user.user_name" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="typePasswordX-2">Password</label>
+                  <input type="password" class="form-control form-control-lg" x-model="user.password" />
+                </div>
+
+                <button class="btn btn-primary btn-lm btn-block" type="submit" @click="signUp()"><i
+                    class="bi bi-key"></i> Sign
+                  Up</button>
+
+                <hr class="my-4">
+                <div><span>Already have an account? </span> <a class="w3-text-indigo" href="javascript:void()"
+                    @click="openSignIn()">Sign In</a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w3-border w3-padding" x-show="currentView == VIEW_PROFILE">
+        <h3 class="mb-5 w3-text-indigo w3-xxlarge w3-center w3-padding-16"><i class="bi bi-user"></i> Profile</h3>
+
+
+        <div class="w3-padding">
+
+          <div class="w3-padding w3-card mb-5">
+            <h2 class="w3-padding w3-padding-16">Personal Details</h2>
+
+            <div class="w3-padding w3-large">
+              <label class="">User Name: </label>
+              <span class="form-control form-control-lg w3-indigo" x-text="profileData.user_name"></span>
+            </div>
+
+            <div class="w3-row ">
+              <div class="form-outline mb-4 w3-half w3-padding">
+                <label class="form-label">First Name</label>
+                <input class="form-control form-control-lg w3-text-dark-gray" x-model="profileData.first_name" />
+              </div>
+
+              <div class="form-outline mb-4 w3-half w3-padding">
+                <label class="form-label">Lastname</label>
+                <input class="form-control form-control-lg w3-text-dark-gray" x-model="profileData.lastname" />
+              </div>
+            </div>
+            <button class="w3-button w3-green" @click="updateProfilePersonal()">Update Details</button>
+          </div>
+
+          <div class="w3-padding w3-card mb-5">
+            <h2 class="w3-padding w3-padding-16">Contact Details</h2>
+            <div class="w3-row w3-padding">
+
+              <div class="form-outline mb-4 w3-half w3-padding">
+                <label class="form-label">Contact Number</label>
+                <input class="form-control form-control-lg w3-text-dark-gray" x-model="profileData.contact_number" />
+              </div>
+
+              <div class="form-outline mb-4 w3-half w3-padding">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control form-control-lg w3-text-dark-gray"
+                  x-model="profileData.email_address" />
+              </div>
+            </div>
+            <button class="w3-button w3-green" @click="updateProfileContact()">Update Contact</button>
+          </div>
+
+          <div class="w3-padding w3-card">
+            <h2 class="w3-padding w3-padding-16">Change Password</h2>
+            <div class="w3-row w3-padding">
+
+              <div class="form-outline mb-4 w3-half w3-padding">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control form-control-lg w3-text-dark-gray"
+                  x-model="profileData.newPassword" />
+              </div>
+
+              <div class="form-outline mb-4 w3-half w3-padding">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="form-control form-control-lg w3-text-dark-gray"
+                  x-model="profileData.confirmPassword" />
+              </div>
+            </div>
+            <button class="w3-button w3-green" @click="updateProfilePassword()">Update Password</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="w3-padding" x-show="currentView == VIEW_ORDERS">
+
+        <div x-show="currentSubView == VIEW_ORDERS_LIST">
+
+          <h1 Class="">Orders</h1>
+
+          <div class="w3-padding">
+
+            <div class="w3-padding w3-border" x-show="orderData.length > 0">
+              <template x-for="order_detail in orderData">
+
+
+                <div class="w3-padding w3-card w3-margin w3-hover-gray mb-4" @click="openOrderItems(order_detail)">
+
+                  <h3 class="w3-xlarge w3-text-dark-gray w3-text-indigo" x-text="'Order Number: #'+order_detail.id">
+                  </h3>
+                  <div>
+                    <div class="w3-row">
+                      <div class="w3-half w3-padding">Order Date: <span x-text="order_detail.order_date"></span></div>
+                      <div class="w3-half w3-padding">Order Status: <span x-text="order_detail.order_status"></span>
+                      </div>
+                    </div>
+                    <div class="w3-row">
+                      <div class="w3-half w3-padding">Total Amount: R <span x-text="order_detail.order_total"></span>
+                      </div>
+                      <div class="w3-half w3-padding">Total Items: <span x-text="order_detail.order_items"></span></div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </template>
+
+            </div>
+
+            <div class="w3-padding w3-border" x-show="orderData.length == 0">
+              <h1 class="w3-center w3-padding-64 w3-xxlarge w3-text-indigo"> No Orders Made</h1>
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+        <div x-show="currentSubView == VIEW_ORDERS_ITEMS">
+          <h1 Class="">Ordered Items</h1>
+
+          <div class="w3-padding w3-border-bottom">
+            <h1 Class=" w3-large">Order Details</h1>
+            <div class="w3-padding w3-margin w3-hover-gray mb-4">
+
+              <h3 class="w3-xlarge w3-text-dark-gray w3-text-indigo" x-text="'Order Number: #'+selectedOrder.id">
+              </h3>
+              <div>
+                <div class="w3-row">
+                  <div class="w3-half w3-padding">Order Date: <span x-text="selectedOrder.order_date"></span></div>
+                  <div class="w3-half w3-padding">Order Status: <span x-text="selectedOrder.order_status"></span>
+                  </div>
+                </div>
+                <div class="w3-row">
+                  <div class="w3-half w3-padding">Total Amount: R <span x-text="selectedOrder.order_total"></span>
+                  </div>
+                  <div class="w3-half w3-padding">Total Items: <span x-text="selectedOrder.order_items"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="w3-row w3-padding-16">
+
+            <template x-for="order_item_value in orderItems">
+              <div class="w3-padding w3-card w3-margin w3-center w3-hover-gray w3-quarter">
+                <h3 class="w3-medium w3-text-dark-gray" x-text="order_item_value.product_name"></h3>
+
+                <div class="w3-row">
+                  <div class="w3-margin">
+                    <img :src="order_item_value.product_image" style="width:50%;max-width:250px" />
+                  </div>
+
+                  <div class="w3-w3-xlarge w3-text-indigo">R <span x-text="order_item_value.product_price"></span> x
+                    <span x-text="order_item_value.product_quantity"></span> items
+                  </div>
+                </div>
+
+
+                <p class="w3-xlagr w3-text-indigo">Sub Total: R <span x-text="order_item_value.sub_total"></span></p>
+              </div>
+            </template>
+
+          </div>
+
+
+          <div class="w3-padding w3-border" x-show="orderItems.length == 0">
+            <h1 class="w3-center w3-padding-64 w3-xxlarge w3-text-indigo"> No items in order</h1>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+      <div class="w3-padding" x-show="currentView == VIEW_CART">
+
+        <h1 Class="">Shopping Cart</h1>
+
+        <div class=" w3-padding-16" x-show="cartData.length>0">
+
+          <div class="w3-row w3-padding-16">
+
+            <template x-for="cart_item in cartData">
+              <div class="w3-padding w3-card w3-margin w3-center w3-hover-gray w3-quarter">
+                <h3 class="w3-medium w3-text-dark-gray" x-text="cart_item.product_name"></h3>
+
+                <div class="w3-row">
+                  <div class="w3-margin">
+                    <img :src="cart_item.product_image" style="width:50%;max-width:150px" />
+                  </div>
+
+                  <div class="w3-w3-xlarge w3-text-indigo">R <span x-text="cart_item.product_price"></span> x
+                    <span x-text="cart_item.product_quantity"></span> items
+                  </div>
+                </div>
+
+
+                <p class="w3-xlagr w3-text-indigo">Sub Total: R <span x-text="cart_item.sub_total"></span></p>
+
+                <div class="w3-padding">
+
+                  <button class="w3-button w3-red w3-round-large w3-center"
+                    @click="addCartQuantity(cart_item,-1)">-</button>
+                  <input class="w3-input w3-border w3-border-indigo w3-center" style="display:inline-block;width:50px;"
+                    x-model="cart_item.product_quantity" x-on:change.debounce="updateCartQuantity(cart_item)" />
+                  <button class="w3-button w3-green w3-round-large w3-center"
+                    @click="addCartQuantity(cart_item,1)">+</button>
+                </div>
+
+                <div>
+                  <button class="w3-button w3-indigo w3-round-medium" @click="cartUpdate(cart_item)"> <i
+                      class="fa fa-shopping-cart"></i> Update</button>
+
+                  <button class="w3-button w3-red w3-round-medium" @click="cartDelete(cart_item)"> <i
+                      class="fa fa-shopping-cart"></i> Remove</button>
+                </div>
+
+
+              </div>
+            </template>
+
+          </div>
+
+          <div>
+            <div class="w3-row  w3-right-align w3-xlarge w3-indigo ">
+              <div class="w3-half w3-padding">Total Items: <span x-text="selectedOrder.order_items"></span></div>
+
+              <div class="w3-half w3-padding">Total Amount: R <span x-text="selectedOrder.order_total"></span>
+              </div>
+            </div>
+
+            <div class="w3-right-align w3-padding">
+              <button class="w3-button w3-indigo w3-round-medium" @click="openCheckout()"> <i
+                  class="fa fa-shopping-cart"></i> Complete Order</button>
+
+              <button class="w3-button w3-red w3-round-medium" @click="cartClear()"> <i class="fa fa-shopping-cart"></i>
+                Clear Cart</button>
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+
+        <div class="w3-padding w3-border" x-show="cartData.length == 0">
+          <h1 class="w3-center w3-padding-64 w3-xxlarge w3-text-indigo"> No items in cart</h1>
+        </div>
+
+
+
+      </div>
+
+      <div x-show="currentView == VIEW_CHECKOUT && cartData.length > 0">
+        <h1 Class="">Cart Checkout</h1>
+
+        <div>
+          <div class="w3-padding w3-large">
+            <div class="w3-padding">Total Items: <span x-text="selectedOrder.order_items"></span></div>
+
+            <div class="w3-padding">Total Amount: R <span x-text="selectedOrder.order_total"></span>
+            </div>
+          </div>
+
+          <div class="w3-padding">
+
+            <div class="w3-padding w3-padding-16 w3-card">
+
+              <div class="w3-row w3-padding">
+
+                <div class="w3-half w3-padding">
+                  <label>Card Number</label>
+                  <input type="number" maxlength="16" class="w3-input w3-border" placeholder="Card Number"
+                    x-model="cartInfomation.card_number" />
+
+                </div>
+
+                <div class="w3-row w3-half w3-padding">
+                  <div class="w3-half">
+                    <label>Card Month</label>
+                    <input class="w3-input w3-border" type="number" maxlength="2" placeholder="Card Month"
+                      x-model="cartInfomation.card_month" />
+
+                  </div>
+
+                  <div class="w3-half">
+
+                    <label>Card Year</label>
+                    <input class="w3-input w3-border" type="number" maxlength="2" placeholder="Card Year"
+                      x-model="cartInfomation.card_year" />
+
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="w3-row">
+
+                <div class="w3-quarter w3-padding">
+
+
+                  <label>Card CVC</label>
+                  <input class="w3-input w3-border" type="number" maxlength="3" placeholder="Card CVC"
+                    x-model="cartInfomation.card_cvc" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w3-right-align w3-padding">
+
+            <button class="w3-button w3-indigo w3-round-medium" @click="openShoppingCart()"> <i
+                class="fa fa-shopping-cart"></i>
+              Back</button>
+
+            <button class="w3-button w3-indigo w3-round-medium" @click="cartCompleteOrder()"> <i
+                class="fa fa-shopping-cart"></i>
+              Complete Order</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="w3-padding" x-show="currentView == VIEW_HOME">
+
+        <div class="w3-padding w3-white">
+          <H1 class="w3-text-indigo w3-large">GenX Home</H1>
+          <H3 class="w3-text-indigo w3-medium" style="padding:20px">BEST DEAL ITEMS</H3>
+
+          <div class="w3-row">
+
+            <template x-for="top_item in homeData">
+              <div class="w3-padding w3-card w3-margin w3-center w3-hover-gray" style="display:inline-block;float:left;"
+                @click="openProductView(top_item)">
+                <h3 class="w3-medium w3-text-dark-gray" x-text="top_item.product_name"></h3>
+
+                <div class="w3-margin">
+                  <img :src="top_item.product_image" style="width:100px;height:100px" />
+                </div>
+
+                <p class="w3-small w3-text-indigo">R <span x-text="top_item.price"></span> </p>
+                <button class="w3-button w3-round-large w3-indigo mt-2"><i class=" fa fa-plus"></i> View
+                  Product</button>
+              </div>
+            </template>
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="w3-padding" x-show="currentView == VIEW_PRODUCT">
+
+        <div x-show="currentSubView == VIEW_PRODUCT_CATEGORY">
+
+          <h1 Class="">Product Category</h1>
+
+          <div class="w3-padding">
+
+            <div class="w3-padding w3-border">
+              <template x-for="category_item in categoryData">
+
+
+                <div class="w3-padding w3-card w3-margin w3-center w3-hover-gray"
+                  style="display:inline-block;float:left;" @click="openProducts(category_item.id)">
+
+                  <div class="w3-margin">
+                    <img :src="category_item.image" style="float:left;width:100px;height:100px" />
+                  </div>
+
+
+                  <h3 class="w3-medium w3-text-dark-gray" x-text="category_item.name"></h3>
+                </div>
+
+              </template>
+
+            </div>
+
+
+
+          </div>
+
+
+        </div>
+
+        <div x-show="currentSubView == VIEW_PRODUCT_ITEMS">
+          <h1 Class="">Product Items</h1>
+
+          <div class="w3-row w3-padding-16 w3-border">
+
+            <template x-for="category_product_item in categoryProductsData">
+              <div class="w3-padding w3-card w3-margin w3-center w3-hover-gray" style="display:inline-block;float:left;"
+                @click="openProductView(category_product_item)">
+                <h3 class="w3-medium w3-text-dark-gray" x-text="category_product_item.product_name"></h3>
+
+                <div class="w3-margin">
+                  <img :src="category_product_item.product_image" style="width:100px;height:100px" />
+                </div>
+
+                <p class="w3-small w3-text-indigo">R <span x-text="category_product_item.price"></span> </p>
+                <button class="w3-button w3-round-large w3-indigo mt-2"><i class=" fa fa-plus"></i> View
+                  Product</button>
+              </div>
+            </template>
+
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="w3-padding" x-show="currentView == VIEW_SEARCH">
+
+        <div class="w3-padding w3-white">
+          <H1 class="w3-text-indigo w3-large">Search for - "<span x-text="searchText"></span>"</H1>
+
+          <div class="w3-row">
+
+            <template x-for="search_item in searchData">
+              <div class="w3-padding w3-card w3-margin w3-center w3-hover-gray" style="display:inline-block;float:left;"
+                @click="openProductView(search_item)">
+                <h3 class="w3-medium w3-text-dark-gray" x-text="search_item.product_name"></h3>
+
+                <div class="w3-margin">
+                  <img :src="search_item.product_image" style="width:100px;height:100px" />
+                </div>
+
+                <p class="w3-small w3-text-indigo">R <span x-text="search_item.price"></span> </p>
+                <button class="w3-button w3-round-large w3-indigo mt-2"><i class=" fa fa-plus"></i> View
+                  Product</button>
+              </div>
+            </template>
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="w3-padding" x-show="currentView == VIEW_PRODUCT_DESCRIPTION">
+
+        <div class="w3-padding w3-white">
+          <H1 class="w3-text-indigo w3-large">Current Product -<span x-text="selectedProduct.product_name"></span>
+          </H1>
+
+          <div class="w3-row w3-padding w3-border">
+
+
+            <div class="w3-half w3-padding">
+              <h2 class="w3-xlarge w3-text-indigo" x-text="selectedProduct.product_name"></h2>
+
+              <div class="w3-margin">
+                <img :src="selectedProduct.product_image" style="width:50%;max-width:250px" />
+              </div>
+
+              <p class="w3-card w3-border w3-bold w3-padding-64 w3-padding" x-text="selectedProduct.description">
+
+              </p>
+
+            </div>
+
+            <div class="w3-half w3-padding" x-show="accountVisible">
+              <p class="w3-xlarge w3-text-indigo">R <span x-text="selectedProduct.price"></span> </p>
+              <div class="w3-padding">
+
+                <button class="w3-button w3-red w3-round-large w3-center" @click="addSelectedQuantity(-1)">-</button>
+                <input class="w3-input w3-border w3-border-indigo w3-center" style="display:inline-block;width:50px;"
+                  x-model="selectedProduct.selected_quantity" x-on:change.debounce="updateSelectedPrice()" />
+                <button class="w3-button w3-green w3-round-large w3-center" @click="addSelectedQuantity(1)">+</button>
+              </div>
+
+              <div>
+                <p>Selected Price: R <span x-text="selectedProduct.calculated_price"></span></p>
+              </div>
+              <button class="w3-button w3-indigo w3-round-medium" @click="cartAdd()"> <i
+                  class="fa fa-shopping-cart"></i> Add to cart</button>
+            </div>
+
+            <div class="w3-half w3-padding" x-show="!accountVisible">
+              <p class="w3-text-indigo w3-large w3-center w3-padding-16">
+
+                Please login to add the product to your account
+              </p>
+
+            </div>
+
+
+
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+      <div class="popup" x-show="popupVisible">
+        <div id="overlay" @click="popupVisible=false">
+          <div class="popup-text" x-text="popupMessage"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>

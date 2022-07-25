@@ -1,0 +1,48 @@
+html {
+    min-width: 100%;
+    height: 100%;
+
+}
+
+body {
+    min-width: 100%;
+
+    height: 100%;
+}
+
+.wrapper {
+    min-width: 100%;
+    min-height: 100%;
+    background-image: url('../img/popcorn-g8f0a31775_1920.jpg') !important;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.movie-image {
+    height: 200px;
+}
+
+#overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(5, 12, 50, 0.75);
+    z-index: 2;
+    cursor: pointer;
+
+}
+
+.popup-text {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    font-size: x-large;
+    color: white;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}

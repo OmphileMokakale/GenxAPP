@@ -1,0 +1,19 @@
+{
+  "name": "generator-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^3.0.0"
+  },
+  "dependencies": {
+    "alpinejs": "^3.10.2",
+    "axios": "^0.27.2",
+    "joi": "^17.6.0"
+  }
+}
