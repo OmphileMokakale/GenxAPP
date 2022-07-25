@@ -1,9 +1,12 @@
-env:
-  - DATABASE_URL=postgres://postgres@localhost:5432/generator_app
+# env:
+#   - DATABASE_URL=postgres://postgres@localhost:5432/generator_app
+language: 
+node_js
+
 node_js:
   - 12
-before_script:
-  - psql -c 'create database generator_app;' -U postgres
-  - psql -U postgres -d generator_app -a -f ./database/generator.sql
-services:
-  - postgresql
+# before_script:
+#   - psql -c 'create database generator_app;' -U postgres
+#   - psql -U postgres -d generator_app -a -f ./database/generator.sql
+# services:
+#   - postgresql
